@@ -1,21 +1,21 @@
-"use client";
 import { Weapon } from '@models/weapon';
 import Image from 'next/image';
 
-export default async function WeaponDetail({ params }: { params: { id: string } }) {
+export default async function WeaponDetail({ params, searchParams }: {
+    params: { id: string },
+    searchParams?: { [key: string]: string | string[] | undefined }
+}) {
     const weapon = await getWeapons(params.id);
 
-    function xssOnClick(event: any) {
-        console.log("ready to be vulnerable");
-    }
+    let search = searchParams?.search || "nothing";
 
     return (
         <div>
             <WeaponPreview weapon={weapon}></WeaponPreview>
             <label>
-                <input type='text'></input>
+                <input id='input' type='text'></input>
             </label>
-            <button onClick={xssOnClick}>send</button>
+            <div dangerouslySetInnerHTML={{ __html: search }} />
         </div>
     );
 }
