@@ -25,13 +25,13 @@ function WeaponPreview({ weapon }: { weapon: Weapon }) {
             <div className="bg-amber-50 w-48 h-48 m-2 content-center shadow-md">
                 <h2 className='flex flex-row justify-center'>
                     {assets && assets.icon &&
-                        <Image src={weapon.assets.icon} alt='we are fucked' width={20} height={20}></Image>
+                        <Image src={weapon.assets.icon} alt='no image for you' width={20} height={20}></Image>
                     }
                     {weapon.name}
                 </h2>
                 <div className='flex flex-row justify-center'>
                     {assets && assets.image &&
-                        <Image src={weapon.assets.image} alt='we are fucked' width={125} height={125}></Image>
+                        <Image src={weapon.assets.image} alt='no image for you' width={125} height={125}></Image>
                     }
                 </div>
             </div>
