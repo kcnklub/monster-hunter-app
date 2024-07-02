@@ -1,21 +1,13 @@
 import { Weapon } from '@models/weapon';
 import Image from 'next/image';
 
-export default async function WeaponDetail({ params, searchParams }: {
+export default async function WeaponDetail({ params }: {
     params: { id: string },
-    searchParams?: { [key: string]: string | string[] | undefined }
 }) {
     const weapon = await getWeapons(params.id);
-
-    let search = searchParams?.search || "nothing";
-
     return (
         <div>
             <WeaponPreview weapon={weapon}></WeaponPreview>
-            <label>
-                <input id='input' type='text'></input>
-            </label>
-            <div dangerouslySetInnerHTML={{ __html: search }} />
         </div>
     );
 }
@@ -23,17 +15,33 @@ export default async function WeaponDetail({ params, searchParams }: {
 function WeaponPreview({ weapon }: { weapon: Weapon }) {
     let assets = weapon.assets;
     return (
-        <div className="bg-amber-50 w-48 h-48 m-2 content-center shadow-md">
-            <h2 className='flex flex-row justify-center'>
+        <div>
+            <h1 className='text-4xl flex flex-row justify-center'>
                 {assets && assets.icon &&
                     <Image src={weapon.assets.icon} alt='no image for you' width={20} height={20}></Image>
                 }
                 {weapon.name}
-            </h2>
+            </h1>
             <div className='flex flex-row justify-center'>
-                {assets && assets.image &&
-                    <Image src={weapon.assets.image} alt='no image for you' width={125} height={125}></Image>
-                }
+                <div className='flex-auto'>
+                    {assets && assets.image &&
+                        <Image
+                            src={weapon.assets.image}
+                            alt='no image for you'
+                            width={200}
+                            height={200}>
+                        </Image>
+                    }
+                </div>
+                <div className='flex-auto'>
+                    <ul>
+                        <li>Rarity: {weapon.rarity}</li>
+                        <li>Type: {weapon.type}</li>
+                        <li>Attack: {weapon.attack.display} ({weapon.attack.raw})</li>
+                        <li>Slots: {weapon.slots.map(slot => slot.rank).join(', ')}</li>
+                        <li>Elements: {weapon.elements.map(element => element.type).join(', ')}</li>
+                    </ul>
+                </div>
             </div>
         </div>
     );

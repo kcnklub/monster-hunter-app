@@ -21,7 +21,7 @@ export default async function Weapons() {
 function WeaponPreview({ weapon }: { weapon: Weapon }) {
     let assets = weapon.assets;
     return (
-        <Link href={`/weapons/${weapon.id}?search=parameter`}>
+        <Link href={`/weapons/${weapon.id}`}>
             <div className="bg-amber-50 w-48 h-48 m-2 content-center shadow-md">
                 <h2 className='flex flex-row justify-center'>
                     {assets && assets.icon &&
