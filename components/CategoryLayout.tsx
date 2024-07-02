@@ -1,10 +1,18 @@
-function CategoryLayout({ children, category }: { children: any, category: string }) {
+"use client"
+
+function CategoryLayout({ children, category, handleSearch }: { children: any, category: string, handleSearch: any }) {
     return (
         <div className="p-24">
-            <h1 className="text-4xl font-bold">{category}</h1>
-            <div className="flex flex-wrap">
-                {children}
+            <div className="flex">
+                <h1 className="text-4xl font-bold">{category}</h1>
+                <input
+                    type="text"
+                    placeholder="Search"
+                    className="text-black ml-4 p-2"
+                    onChange={handleSearch}>
+                </input>
             </div>
+            {children}
         </div>
     );
 }

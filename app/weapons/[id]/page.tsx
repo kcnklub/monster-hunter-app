@@ -22,8 +22,11 @@ function WeaponPreview({ weapon }: { weapon: Weapon }) {
                 }
                 {weapon.name}
             </h1>
-            <div className='flex flex-row justify-center'>
-                <div className='flex-auto'>
+            <div className='flex'>
+                <div className='w-1/4'></div>
+                <div
+                    className='flex justify-center m-4 bg-[#cdd6f4] w-1/4 rounded-md'
+                >
                     {assets && assets.image &&
                         <Image
                             src={weapon.assets.image}
@@ -33,15 +36,25 @@ function WeaponPreview({ weapon }: { weapon: Weapon }) {
                         </Image>
                     }
                 </div>
-                <div className='flex-auto'>
+                <div
+                    className='m-4 p-4 bg-[#313244] rounded-md h-200 w-1/4 shadow-md'
+                >
+                    <h2 className='text-2xl font-semibold'>Details</h2>
                     <ul>
-                        <li>Rarity: {weapon.rarity}</li>
-                        <li>Type: {weapon.type}</li>
-                        <li>Attack: {weapon.attack.display} ({weapon.attack.raw})</li>
-                        <li>Slots: {weapon.slots.map(slot => slot.rank).join(', ')}</li>
-                        <li>Elements: {weapon.elements.map(element => element.type).join(', ')}</li>
+                        <li><b>Rarity:</b> {weapon.rarity}</li>
+                        <li><b>Type:</b> {weapon.type}</li>
+                        <li><b>Attack:</b> {weapon.attack.display} ({weapon.attack.raw})</li>
+                        {
+                            weapon.slots && weapon.slots.length > 0 &&
+                            <li><b>Slots:</b> {weapon.slots.map(slot => slot.rank).join(', ')}</li>
+                        }
+                        {
+                            weapon.elements && weapon.elements.length > 0 &&
+                            <li><b>Elements:</b> {weapon.elements.map(element => element.type).join(', ')}</li>
+                        }
                     </ul>
                 </div>
+                <div className='w-1/4'></div>
             </div>
         </div>
     );

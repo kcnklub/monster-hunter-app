@@ -1,61 +1,51 @@
-import CategoryLayout from '@/components/CategoryLayout';
-import Image from 'next/image';
-import Link from 'next/link';
+"use client";
 
-export default async function Weapons() {
-    const weapons = await getWeapons();
+import { useState } from 'react';
+import CategoryLayout from '@/components/CategoryLayout';
+import { WeaponList } from '@/components/WeaponList';
+import useSWR from 'swr';
+
+export default function Weapons() {
+    const [search, setSearch] = useState('');
+    const { weapons, error, isLoading } = useWeapons();
+
+    // search handlers
+    const nothing = (_: any) => { };
+    const handleSearch = (event: any) => {
+        setSearch(event.target.value);
+    }
+
+    if (isLoading) {
+        return (
+            <CategoryLayout category="Weapons" handleSearch={nothing}>
+                <div>Loading...</div>
+            </CategoryLayout >
+        )
+    }
+    if (error) {
+        return (
+            <CategoryLayout category="Weapons" handleSearch={nothing}>
+                <div>Error: {error.message}</div>
+            </CategoryLayout >
+        )
+    }
+
     return (
         <div>
-            <CategoryLayout category="Weapons">
-                {
-                    weapons.map(weapon => (
-                        <WeaponPreview key={weapon.id} weapon={weapon} />
-                    ))
-                }
+            <CategoryLayout category="Weapons" handleSearch={handleSearch}>
+                <WeaponList weapons={weapons} search={search}></WeaponList>
             </CategoryLayout>
         </div>
     );
 }
 
+const fetcher = (...args) => fetch(...args).then(res => res.json());
 
-function WeaponPreview({ weapon }: { weapon: Weapon }) {
-    let assets = weapon.assets;
-    return (
-        <Link href={`/weapons/${weapon.id}`}>
-            <div className="bg-amber-50 w-48 h-48 m-2 content-center shadow-md">
-                <h2 className='flex flex-row justify-center'>
-                    {assets && assets.icon &&
-                        <Image src={weapon.assets.icon} alt='no image for you' width={20} height={20}></Image>
-                    }
-                    {weapon.name}
-                </h2>
-                <div className='flex flex-row justify-center'>
-                    {assets && assets.image &&
-                        <Image src={weapon.assets.image} alt='no image for you' width={125} height={125}></Image>
-                    }
-                </div>
-            </div>
-        </Link>
-    );
-}
-async function getWeapons(): Promise<Weapon[]> {
-    const response = await fetch('https://mhw-db.com/weapons');
-    if (!response.ok) {
-        throw new Error('Failed to fetch weapons');
-    }
-    const weapons = await response.json();
-    return weapons as Weapon[];
-}
-
-
-type Weapon = {
-    id: number;
-    name: string;
-    rarity: number;
-    assets: WeaponAssets;
-}
-
-type WeaponAssets = {
-    icon: string;
-    image: string;
+function useWeapons() {
+    const { data, error, isLoading } = useSWR('https://mhw-db.com/weapons', fetcher);
+    return {
+        weapons: data,
+        error,
+        isLoading
+    };
 }
