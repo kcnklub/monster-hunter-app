@@ -1,6 +1,12 @@
 "use client"
 
-function CategoryLayout({ children, category, handleSearch }: { children: any, category: string, handleSearch: any }) {
+function CategoryLayout({ mainContent, selector, category, handleSearch }:
+    {
+        mainContent: any,
+        selector: any,
+        category: string,
+        handleSearch: any
+    }) {
     return (
         <div className="p-24">
             <div className="flex">
@@ -11,8 +17,9 @@ function CategoryLayout({ children, category, handleSearch }: { children: any, c
                     className="text-black ml-4 p-2"
                     onChange={handleSearch}>
                 </input>
+                {selector}
             </div>
-            {children}
+            {mainContent}
         </div>
     );
 }

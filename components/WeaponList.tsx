@@ -2,14 +2,22 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Weapon } from '@/models/weapon';
+import { Weapon, WeaponType } from '@/models/weapon';
 
-export function WeaponList({ weapons, search }: { weapons: Weapon[], search: string }) {
+export function WeaponList({ weapons, search, filter }:
+    {
+        weapons: Weapon[],
+        search: string,
+        filter: WeaponType | null
+    }) {
+
+
     return (
         <div className='flex flex-wrap'>
             {
                 weapons
                     .filter(weapon => weapon.name.toLowerCase().includes(search.toLowerCase()))
+                    .filter(weapon => filter === null || weapon.type === filter)
                     .map(weapon => (
                         <WeaponPreview key={weapon.id} weapon={weapon} />
                     ))
@@ -41,7 +49,6 @@ function WeaponPreview({ weapon }: { weapon: Weapon }) {
                             alt='no image for you'
                             width={125}
                             height={125}>
-
                         </Image>
                     }
                 </div>
