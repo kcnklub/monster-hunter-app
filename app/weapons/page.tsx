@@ -4,7 +4,6 @@ import { useState } from 'react';
 import CategoryLayout from '@/components/CategoryLayout';
 import { WeaponList } from '@/components/WeaponList';
 import useSWR from 'swr';
-import Image from 'next/image';
 import { WeaponType, WeaponFilters } from '@/models/weapon';
 
 export default function Weapons() {
@@ -46,15 +45,13 @@ export default function Weapons() {
     }
 
     return (
-        <div>
-            <CategoryLayout
-                category="Weapons"
-                handleSearch={handleSearch}
-                selector={<WeaponSelector weaponFilter={handleFilterChange}></WeaponSelector>}
-                mainContent={<WeaponList weapons={weapons} search={search} filter={weaponFilter}></WeaponList>}
-            >
-            </CategoryLayout>
-        </div>
+        <CategoryLayout
+            category="Weapons"
+            handleSearch={handleSearch}
+            selector={<WeaponSelector weaponFilter={handleFilterChange}></WeaponSelector>}
+            mainContent={<WeaponList weapons={weapons} search={search} filter={weaponFilter}></WeaponList>}
+        >
+        </CategoryLayout>
     );
 }
 
@@ -63,15 +60,16 @@ function WeaponSelector({ weaponFilter }: { weaponFilter: (filter: WeaponType) =
         <div className='flex flex-auto'>
             {
                 WeaponFilters.map((filter) => (
-                    <Image
+                    <img
                         key={filter.value}
                         src={filter.url}
                         width={50}
                         height={50}
                         alt={filter.value}
                         onClick={() => weaponFilter(filter.value as WeaponType)}
+                        className='cursor-pointer'
                     >
-                    </Image>
+                    </img>
                 ))
             }
         </div>
